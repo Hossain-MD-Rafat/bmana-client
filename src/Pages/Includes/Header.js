@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function () {
+export default function (props) {
   return (
     <div>
       <header>
@@ -66,195 +66,38 @@ export default function () {
                       </div>
                       <div class="nav_list">
                         <ul>
-                          <li>
-                            <a href="index.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-house"></i>
-                              </span>{" "}
-                              Home
-                            </a>
-                          </li>
-                          <li>
-                            <a href="about.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-circle-info"></i>
-                              </span>{" "}
-                              About US
-                              <span class="droppper">
-                                <i class="fa-solid fa-caret-down"></i>
-                              </span>
-                            </a>
-                            <ul class="sub_down">
-                              <li>
-                                <a href="about.html">About BMANA</a>
-                              </li>
-                              <li>
-                                <a href="#">Mission and Vision</a>
-                              </li>
-                              <li>
-                                <a href="#">President’s Message</a>
-                              </li>
-                              <li>
-                                <a href="#">Executive Committee</a>
-                              </li>
-                              <li>
-                                <a href="#">Honorees</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Alliance</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Constitution</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="mambership.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-user-group"></i>
-                              </span>{" "}
-                              Mambership
-                              <span class="droppper">
-                                <i class="fa-solid fa-caret-down"></i>
-                              </span>
-                            </a>
-                            <ul class="sub_down">
-                              <li>
-                                <a href="#">About BMANA</a>
-                              </li>
-                              <li>
-                                <a href="#">Mission and Vision</a>
-                              </li>
-                              <li>
-                                <a href="#">Honorees</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Alliance</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Constitution</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="media.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-photo-film"></i>
-                              </span>{" "}
-                              Media
-                              <span class="droppper">
-                                <i class="fa-solid fa-caret-down"></i>
-                              </span>
-                            </a>
-                            <ul class="sub_down">
-                              <li>
-                                <a href="#">About BMANA</a>
-                              </li>
-                              <li>
-                                <a href="#">Mission and Vision</a>
-                              </li>
-                              <li>
-                                <a href="#">President’s Message</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Alliance</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Constitution</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="event.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-calendar-check"></i>
-                              </span>{" "}
-                              Events
-                              <span class="droppper">
-                                <i class="fa-solid fa-caret-down"></i>
-                              </span>
-                            </a>
-                            <ul class="sub_down">
-                              <li>
-                                <a href="#">About BMANA</a>
-                              </li>
-                              <li>
-                                <a href="#">Executive Committee</a>
-                              </li>
-                              <li>
-                                <a href="#">Honorees</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Alliance</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Constitution</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="resource.html">
-                              {" "}
-                              <span>
-                                <i class="fa-brands fa-react"></i>
-                              </span>{" "}
-                              Resources
-                              <span class="droppper">
-                                <i class="fa-solid fa-caret-down"></i>
-                              </span>
-                            </a>
-                            <ul class="sub_down">
-                              <li>
-                                <a href="#">About BMANA</a>
-                              </li>
-                              <li>
-                                <a href="#">Mission and Vision</a>
-                              </li>
-                              <li>
-                                <a href="#">President’s Message</a>
-                              </li>
-                              <li>
-                                <a href="#">BMANA Constitution</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="chapter.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-file"></i>
-                              </span>{" "}
-                              Chapters
-                              <span class="droppper">
-                                <i class="fa-solid fa-caret-down"></i>
-                              </span>
-                            </a>
-                            <ul class="sub_down">
-                              <li>
-                                <a href="#">About BMANA</a>
-                              </li>
-                              <li>
-                                <a href="#">Mission and Vision</a>
-                              </li>
-                              <li>
-                                <a href="#">President’s Message</a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="contact.html">
-                              {" "}
-                              <span>
-                                <i class="fa-solid fa-phone"></i>
-                              </span>{" "}
-                              Contact Us
-                            </a>
-                          </li>
+                          {props.mainNav &&
+                            props.mainNav.map((navItem) => {
+                              return (
+                                <li>
+                                  <a href="about.html">
+                                    {" "}
+                                    <span>
+                                      <i class="fa-solid fa-circle-info"></i>
+                                    </span>{" "}
+                                    {navItem.menu_name}
+                                    {navItem.sub_nav.length > 0 && (
+                                      <span class="droppper">
+                                        <i class="fa-solid fa-caret-down"></i>
+                                      </span>
+                                    )}
+                                  </a>
+                                  {navItem.sub_nav.length > 0 && (
+                                    <ul class="sub_down">
+                                      {navItem.sub_nav.map((item) => {
+                                        return (
+                                          <li>
+                                            <a href="about.html">
+                                              {item.menu_name}
+                                            </a>
+                                          </li>
+                                        );
+                                      })}
+                                    </ul>
+                                  )}
+                                </li>
+                              );
+                            })}
                         </ul>
                       </div>
                       <div class="login_btn text-center">
@@ -313,143 +156,31 @@ export default function () {
                   <a href="#">Home</a>
                 </div>
               </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#" class="js-link1">
-                    About Us<i class="fa fa-chevron-down"></i>
-                  </a>
-                  <ul class="js-dropdown-list1">
-                    <li>
-                      <a href="#">About BMANA</a>
-                    </li>
-                    <li>
-                      <a href="#">Mission and Vision</a>
-                    </li>
-                    <li>
-                      <a href="#">President’s Message</a>
-                    </li>
-                    <li>
-                      <a href="#">Executive Committee</a>
-                    </li>
-                    <li>
-                      <a href="#">Honorees</a>
-                    </li>
-                    <li>
-                      <a href="#">BMANA Alliance</a>
-                    </li>
-                    <li>
-                      <a href="#">BMANA Constitution</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#" class="js-link2">
-                    Mambership<i class="fa fa-chevron-down"></i>
-                  </a>
-                  <ul class="js-dropdown-list2">
-                    <li>
-                      <a href="#">About BMANA</a>
-                    </li>
-                    <li>
-                      <a href="#">Mission and Vision</a>
-                    </li>
-                    <li>
-                      <a href="#">President’s Message</a>
-                    </li>
-                    <li>
-                      <a href="#">Executive Committee</a>
-                    </li>
-                    <li>
-                      <a href="#">Honorees</a>
-                    </li>
-                    <li>
-                      <a href="#">BMANA Alliance</a>
-                    </li>
-                    <li>
-                      <a href="#">BMANA Constitution</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#" class="js-link3">
-                    Media <i class="fa fa-chevron-down"></i>
-                  </a>
-                  <ul class="js-dropdown-list3">
-                    <li>
-                      <a href="#">About BMANA</a>
-                    </li>
-                    <li>
-                      <a href="#">Mission and Vision</a>
-                    </li>
-                    <li>
-                      <a href="#">President’s Message</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#" class="js-link4">
-                    Events<i class="fa fa-chevron-down"></i>
-                  </a>
-                  <ul class="js-dropdown-list4">
-                    <li>
-                      <a href="#">About BMANA</a>
-                    </li>
-                    <li>
-                      <a href="#">Mission and Vision</a>
-                    </li>
-                    <li>
-                      <a href="#">President’s Message</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#" class="js-link5">
-                    Resources <i class="fa fa-chevron-down"></i>
-                  </a>
-                  <ul class="js-dropdown-list5">
-                    <li>
-                      <a href="#">About BMANA</a>
-                    </li>
-                    <li>
-                      <a href="#">Mission and Vision</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#" class="js-link6">
-                    Chapters <i class="fa fa-chevron-down"></i>
-                  </a>
-                  <ul class="js-dropdown-list6">
-                    <li>
-                      <a href="#">About BMANA</a>
-                    </li>
-                    <li>
-                      <a href="#">Mission and Vision</a>
-                    </li>
-                    <li>
-                      <a href="#">President’s Message</a>
-                    </li>
-                    <li>
-                      <a href="#">Executive Committee</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="nav_list">
-                <div class="dropdown">
-                  <a href="#">Contact Us</a>
-                </div>
-              </div>
+              {props.mainNav &&
+                props.mainNav.map((navItem) => {
+                  return (
+                    <div class="nav_list">
+                      <div class="dropdown">
+                        <a href="#" class="js-link1">
+                          {navItem.menu_name}
+                          <i class="fa fa-chevron-down"></i>
+                        </a>
+
+                        {navItem.sub_nav.length > 0 && (
+                          <ul class="js-dropdown-list1">
+                            {navItem.sub_nav.map((item) => {
+                              return (
+                                <li>
+                                  <a href="#">{item.menu_name}</a>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

@@ -8,7 +8,6 @@ $(function(){
     }
   });
 // Header Two Part
-
 $(window).scroll(function(){
   if ($(this).scrollTop() > 50) {
      $('.SubpageHeader').addClass('subPageHeaderNewClass');
@@ -219,6 +218,7 @@ link6.click(function(e) {
   e.preventDefault();
   list6.slideToggle(200);
 }); 
+
 // AOS
 AOS.init();
 
