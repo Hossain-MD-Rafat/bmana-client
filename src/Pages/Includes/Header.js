@@ -66,6 +66,15 @@ export default function (props) {
                       </div>
                       <div class="nav_list">
                         <ul>
+                          <li>
+                            <a href="index.html">
+                              {" "}
+                              <span>
+                                <i class="fa-solid fa-house"></i>
+                              </span>{" "}
+                              Home
+                            </a>
+                          </li>
                           {props.mainNav &&
                             props.mainNav.map((navItem) => {
                               return (
