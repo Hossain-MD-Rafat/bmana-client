@@ -4,7 +4,9 @@ import Footer from "./Includes/Footer";
 import Slider from "react-slick";
 
 export default function Home() {
+  const parser = new DOMParser();
   const [data, setData] = useState([]);
+  const [members, setMembers] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -13,7 +15,18 @@ export default function Home() {
   const loadData = () => {
     fetch("https://icircles.app/api/medicalassociation/home/166")
       .then((response) => response.json())
-      .then((data) => setData(data.data))
+      .then((data) => {
+        setData(data.data);
+        let ms_id = data.data.ms_id;
+        fetch(
+          `https://icircles.app/api/medicalassociation/membersearch/${ms_id}`
+        )
+          .then((response) => response.json())
+          .then((data) => setMembers(data.data))
+          .catch((error) => {
+            console.log(error);
+          });
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -53,7 +66,14 @@ export default function Home() {
                             <div className="banner_wrap">
                               <div className="banner_search">
                                 <h4>{slider.title}</h4>
-                                <h5>{slider.description}</h5>
+                                <h5>
+                                  {
+                                    parser.parseFromString(
+                                      slider.description,
+                                      "text/html"
+                                    ).body.innerText
+                                  }
+                                </h5>
                               </div>
                             </div>
                           </div>
@@ -73,7 +93,7 @@ export default function Home() {
             <div className="sideBar_wrapper">
               <div className="sideBar_contain">
                 <div className="logo text-center">
-                  <img src="images/bmana.png" alt="" />
+                  <img src="assets/images/bmana.png" alt="" />
                 </div>
                 <div className="login_btn text-center">
                   <a href="#">
@@ -96,9 +116,36 @@ export default function Home() {
                       </a>
                     </li>
 
-                    {props.mainNav &&
-                      props.mainNav.map((navItem) => {
-                        return 0;
+                    {data.main_nav &&
+                      data.main_nav.map((navItem) => {
+                        return (
+                          <li>
+                            <a href="#">
+                              {" "}
+                              <span>
+                                <i class="fa-solid fa-circle-info"></i>
+                              </span>{" "}
+                              {navItem.menu_name}
+                              {navItem.sub_nav.length > 0 && (
+                                <span class="droppper">
+                                  <i class="fa-solid fa-caret-down"></i>
+                                </span>
+                              )}
+                            </a>
+                            {navItem.menu_name}
+                            {navItem.sub_nav.length > 0 && (
+                              <ul class="sub_down">
+                                {navItem.sub_nav.map((item) => {
+                                  return (
+                                    <li>
+                                      <a href="#">{item.menu_name}</a>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            )}
+                          </li>
+                        );
                       })}
 
                     <li>
@@ -167,7 +214,7 @@ export default function Home() {
                     </p>
                     <a href="#">11:00 AM to 08:00 PM</a>
                     <div className="qcode_img">
-                      <img src="images/qrcode.png" alt="" />
+                      <img src="assets/images/qrcode.png" alt="" />
                     </div>
                   </div>
                 </div>
@@ -219,7 +266,7 @@ export default function Home() {
                 <div className="col-lg-4 text-center">
                   <div className="slider_item">
                     <div className="sl_img">
-                      <img src="images/s3.jpg" alt="" />
+                      <img src="assets/images/s3.jpg" alt="" />
                     </div>
                     <h4>YOUNG PHYSICIAN CAREER</h4>
                     <a href="#">Read More</a>
@@ -228,7 +275,7 @@ export default function Home() {
                 <div className="col-lg-4 text-center">
                   <div className="slider_item">
                     <div className="sl_img">
-                      <img src="images/s4.jpg" alt="" />
+                      <img src="assets/images/s4.jpg" alt="" />
                     </div>
                     <h4> PANDEMIC OF COVID-19 </h4>
                     <a href="#">Read More</a>
@@ -237,7 +284,7 @@ export default function Home() {
                 <div className="col-lg-4 text-center">
                   <div className="slider_item">
                     <div className="sl_img">
-                      <img src="images/1.jpg" alt="" />
+                      <img src="assets/images/1.jpg" alt="" />
                     </div>
                     <h4> COVID 19 </h4>
                     <a href="#">Read More</a>
@@ -246,7 +293,7 @@ export default function Home() {
                 <div className="col-lg-4 text-center">
                   <div className="slider_item">
                     <div className="sl_img">
-                      <img src="images/2.jpg" alt="" />
+                      <img src="assets/images/2.jpg" alt="" />
                     </div>
                     <h4>BMANA CONVENTION </h4>
                     <a href="#">Read More</a>
@@ -287,158 +334,33 @@ export default function Home() {
             </div>
             <div className="committe_wrapper">
               <div className="row">
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
+                {members &&
+                  members.map((member) => {
+                    return (
+                      <div
+                        class="col-sm-6 col-md-4 col-lg-3"
+                        data-aos="fade-up-right"
+                        data-aos-easing="ease"
+                        data-aos-duration="5s"
+                      >
+                        <div class="committe_wrap">
+                          <div class="profile_img text-center">
+                            <div class="p_img">
+                              <img src={"https://icircles.app/" + member.thumb} alt="" />
+                            </div>
+                            <h4>
+                              {member.designation} -{" "}
+                              {member.firstname + " " + member.lastname}
+                            </h4>
+                          </div>
+                          <div class="profile_info">
+                            <h5>{member.about_member}</h5>
+                            <h6 className="text-center">{member.email}</h6>
+                          </div>
+                        </div>
                       </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="col-sm-6 col-md-4 col-lg-3"
-                  data-aos="fade-up-right"
-                  data-aos-easing="ease"
-                  data-aos-duration="5s"
-                >
-                  <div className="committe_wrap">
-                    <div className="profile_img text-center">
-                      <div className="p_img">
-                        <img src="images/profileMAn.png" alt="" />
-                      </div>
-                      <h4>President - Elect</h4>
-                    </div>
-                    <div className="profile_info">
-                      <h5>Lorem Ipsum</h5>
-                      <h6>presidentelect@bmana.org</h6>
-                    </div>
-                  </div>
-                </div>
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -567,38 +489,38 @@ export default function Home() {
                 <div className="col-lg-1"></div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
                 <div className="col-lg-1"></div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
                 <div className="col-sm-6 col-md-4 col-lg-3">
                   <div className="sponsor_wrap">
-                    <img src="images/spon_1.png" alt="" />
+                    <img src="assets/images/spon_1.png" alt="" />
                   </div>
                 </div>
               </div>
@@ -623,19 +545,19 @@ export default function Home() {
                 <div className="col-lg-10">
                   <div className="news_imgSlide">
                     <div className="news_img">
-                      <img src="images/ss.png" alt="" />
+                      <img src="assets/images/ss.png" alt="" />
                     </div>
                     <div className="news_img">
-                      <img src="images/ss2.png" alt="" />
+                      <img src="assets/images/ss2.png" alt="" />
                     </div>
                     <div className="news_img">
-                      <img src="images/ss3.png" alt="" />
+                      <img src="assets/images/ss3.png" alt="" />
                     </div>
                     <div className="news_img">
-                      <img src="images/ss4.png" alt="" />
+                      <img src="assets/images/ss4.png" alt="" />
                     </div>
                     <div className="news_img">
-                      <img src="images/ss5.png" alt="" />
+                      <img src="assets/images/ss5.png" alt="" />
                     </div>
                   </div>
                 </div>

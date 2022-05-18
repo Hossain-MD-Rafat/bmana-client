@@ -350,7 +350,8 @@ p{
 .headerPartTwoNewClass{
     opacity:1;
     background-color:#006a4e;
-    animation:mymove .9s
+    animation:mymove .9s;
+    padding: 22px 0px;
 }
 @keyframes mymove{
     0%{
@@ -502,10 +503,11 @@ p{
 }
 .banner_main .banner_slider .banner .banner_wrapper .banner_wrap .banner_search{
     background-color:rgba(0,0,0,0.6);
-    padding:20px 30px;
+    padding:20px 70px;
     color:#333;
     border-radius:30px
 }
+
 .banner_main .banner_slider .banner .banner_wrapper .banner_wrap .banner_search h4{
     font-size:40px;
     color:#fff;
@@ -642,7 +644,7 @@ p{
     opacity:50%;
     height:100%;
     width:100%;
-    z-index:-1
+    z-index:-2
 }
 .mission .mission_wrapper .mission_item{
     padding:115px 40px;
@@ -2174,4 +2176,17 @@ p{
 }
 .slick-dots li button::before {
     content: '';
+}
+.banner_wrap .banner_search h4, h5{
+    text-align: center;
+}
+.banner_wrap .banner_search h4{
+    color:rgb(255, 255, 255);
+    font-size: 36px;
+    line-height: 80px;
+}
+.banner_wrap .banner_search h4, h5{
+    color:rgba(255, 255, 255, 0.877);
+    font-size: 24px;
+    line-height: 40px;
 }
