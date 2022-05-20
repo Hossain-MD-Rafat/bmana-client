@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "./Includes/Header";
 import Footer from "./Includes/Footer";
 import Slider from "react-slick";
+import { ModalContext } from "../App";
+import { Link } from "react-router-dom";
+import Page from "./Page";
 
 export default function Home() {
   const parser = new DOMParser();
@@ -44,10 +47,62 @@ export default function Home() {
     speed: 800,
     dots: true,
   };
+  const settings_slide = {
+    infinite: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    cssEase: "linear",
+    autoplay: true,
+    autoplaySpeed: 4000,
+    speed: 800,
+    dots: true,
+  };
+  const card = {
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    speed: 800,
+    dots: false,
+    responsive: [
+      {
+        breakpoint: 968,
+        settings: {
+          arrows: true,
+          centerMode: true,
+          centerPadding: "0px",
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          arrows: false,
+          centerMode: true,
+          centerPadding: "0px",
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+          centerMode: true,
+          centerPadding: "0px",
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  const { show, handleShow, handleClose } = useContext(ModalContext);
 
   return (
     <div>
-      <Header mainNav={data.main_nav} />
+      <Header mainNav={data.main_nav} ms_id={data.ms_id} />
       <section>
         <div className="banner_main">
           <Slider {...settings} className="banner_slider">
@@ -96,7 +151,7 @@ export default function Home() {
                   <img src="assets/images/bmana.png" alt="" />
                 </div>
                 <div className="login_btn text-center">
-                  <a href="#">
+                  <a href="#" onClick={handleShow}>
                     {" "}
                     <span>
                       <i className="fa-solid fa-user"></i>
@@ -107,7 +162,7 @@ export default function Home() {
                 <div className="nav_list">
                   <ul>
                     <li>
-                      <a href="#">
+                      <a>
                         {" "}
                         <span>
                           <i className="fa-solid fa-house"></i>
@@ -120,7 +175,14 @@ export default function Home() {
                       data.main_nav.map((navItem) => {
                         return (
                           <li>
-                            <a href="#">
+                            <Link
+                              to={`/page/${data.ms_id}/${navItem.id}`}
+                              style={{
+                                display: "block",
+                                height: "100%",
+                                width: "100%",
+                              }}
+                            >
                               {" "}
                               <span>
                                 <i class="fa-solid fa-circle-info"></i>
@@ -131,14 +193,16 @@ export default function Home() {
                                   <i class="fa-solid fa-caret-down"></i>
                                 </span>
                               )}
-                            </a>
-                            {navItem.menu_name}
+                            </Link>
+
                             {navItem.sub_nav.length > 0 && (
                               <ul class="sub_down">
                                 {navItem.sub_nav.map((item) => {
                                   return (
                                     <li>
-                                      <a href="#">{item.menu_name}</a>
+                                      <Link to={`/page/${item.id}`}>
+                                        {item.menu_name}
+                                      </Link>
                                     </li>
                                   );
                                 })}
@@ -149,7 +213,7 @@ export default function Home() {
                       })}
 
                     <li>
-                      <a href="#">
+                      <a>
                         {" "}
                         <span>
                           <i className="fa-solid fa-phone"></i>
@@ -192,7 +256,9 @@ export default function Home() {
                       on July 1-3 at Marriott Marquis Hotel. This year’s
                       convention is being organized by Central...
                     </p>
-                    <a href="#">Attend Annual Convention & Upcoming Events</a>
+                    <a href="#" onClick={handleShow}>
+                      Attend Annual Convention & Upcoming Events
+                    </a>
                   </div>
                 </div>
                 <div
@@ -229,77 +295,47 @@ export default function Home() {
           <div className="container">
             <div className="mission_wrapper">
               <div className="row">
-                <div className="col-md-6 col-lg-4 text-center">
-                  <div className="mission_item">
-                    <h4> MISSION</h4>
-                    <p>
-                      To bring together and to improve communication between the
-                      physicians…
-                    </p>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
-                <div className="col-md-6 col-lg-4 text-center">
-                  <div className="mission_item">
-                    <h4> VISION</h4>
-                    <p>
-                      To bring together and to improve communication between the
-                      physicians…
-                    </p>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
-                <div className="col-md-6 col-lg-4 text-center">
-                  <div className="mission_item">
-                    <h4>Constitution</h4>
-                    <p>
-                      To bring together and to improve communication between the
-                      physicians…
-                    </p>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
+                {data.no_position &&
+                  data.no_position.slice(0, 3).map((item) => {
+                    return (
+                      <div className="col-md-6 col-lg-4 text-center">
+                        <div className="mission_item">
+                          <h4>{item.menu_name}</h4>
+                          <p>
+                            {
+                              parser.parseFromString(
+                                item.body_content,
+                                "text/html"
+                              ).body.innerText
+                            }
+                          </p>
+                          <a href="#">Read More</a>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <div className="card_wrapper">
-              <div className="row card_slider">
-                <div className="col-lg-4 text-center">
-                  <div className="slider_item">
-                    <div className="sl_img">
-                      <img src="assets/images/s3.jpg" alt="" />
-                    </div>
-                    <h4>YOUNG PHYSICIAN CAREER</h4>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
-                <div className="col-lg-4 text-center">
-                  <div className="slider_item">
-                    <div className="sl_img">
-                      <img src="assets/images/s4.jpg" alt="" />
-                    </div>
-                    <h4> PANDEMIC OF COVID-19 </h4>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
-                <div className="col-lg-4 text-center">
-                  <div className="slider_item">
-                    <div className="sl_img">
-                      <img src="assets/images/1.jpg" alt="" />
-                    </div>
-                    <h4> COVID 19 </h4>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
-                <div className="col-lg-4 text-center">
-                  <div className="slider_item">
-                    <div className="sl_img">
-                      <img src="assets/images/2.jpg" alt="" />
-                    </div>
-                    <h4>BMANA CONVENTION </h4>
-                    <a href="#">Read More</a>
-                  </div>
-                </div>
-              </div>
+              <Slider {...card} className="row card_slider">
+                {data.front_sections &&
+                  data.front_sections.map((item) => {
+                    return (
+                      <div className="col-lg-4 text-center">
+                        <div className="slider_item">
+                          <div className="sl_img">
+                            <img
+                              src={`https://icircles.app/uploads/content/${item.microsite_id}/${item.featured_image}`}
+                              alt=""
+                            />
+                          </div>
+                          <h4>{item.menu_name}</h4>
+                          <a href="#">Read More</a>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </Slider>
             </div>
             <div
               className="portocol"
@@ -336,30 +372,35 @@ export default function Home() {
               <div className="row">
                 {members &&
                   members.map((member) => {
-                    return (
-                      <div
-                        class="col-sm-6 col-md-4 col-lg-3"
-                        data-aos="fade-up-right"
-                        data-aos-easing="ease"
-                        data-aos-duration="5s"
-                      >
-                        <div class="committe_wrap">
-                          <div class="profile_img text-center">
-                            <div class="p_img">
-                              <img src={"https://icircles.app/" + member.thumb} alt="" />
+                    if (member.id == 1) {
+                      return (
+                        <div
+                          class="col-sm-6 col-md-4 col-lg-3"
+                          data-aos="fade-up-right"
+                          data-aos-easing="ease"
+                          data-aos-duration="5s"
+                        >
+                          <div class="committe_wrap">
+                            <div class="profile_img text-center">
+                              <div class="p_img">
+                                <img
+                                  src={"https://icircles.app/" + member.thumb}
+                                  alt=""
+                                />
+                              </div>
+                              <h4>
+                                {member.designation} -{" "}
+                                {member.firstname + " " + member.lastname}
+                              </h4>
                             </div>
-                            <h4>
-                              {member.designation} -{" "}
-                              {member.firstname + " " + member.lastname}
-                            </h4>
-                          </div>
-                          <div class="profile_info">
-                            <h5>{member.about_member}</h5>
-                            <h6 className="text-center">{member.email}</h6>
+                            <div class="profile_info">
+                              <h5>{member.about_member}</h5>
+                              <h6 className="text-center">{member.email}</h6>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
+                      );
+                    }
                   })}
               </div>
             </div>
@@ -382,9 +423,11 @@ export default function Home() {
                     type specimen book. It has survived not only five centu
                   </p>
                   <div className="mamber_adder">
-                    <a href="#">Become A Mamber</a>
+                    <a href="#" onClick={handleShow}>
+                      Become A Mamber
+                    </a>
                     <span>
-                      <a href="#" className="mamber_add">
+                      <a href="#" className="mamber_add" onClick={handleShow}>
                         <i className="fa-solid fa-user-plus"></i>
                       </a>
                     </span>
@@ -408,66 +451,27 @@ export default function Home() {
             </div>
             <div className="resources_wrapper" data-aos="fade-up">
               <div className="row">
-                <div className="col-md-6 col-lg-4">
-                  <div className="resource_wrap">
-                    <div className="top_wrap text-center">
-                      <i className="fa-solid fa-chalkboard-user"></i>
-                      <h4>CAREER OPPORTUNITIES</h4>
-                    </div>
-                    <div className="bottom_wrap">
-                      <p>
-                        Access tools designed to help you succeed in your
-                        practice no matter the stage of your career.Lorem Ipsum
-                        is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard
-                        dummy text ever since the 1500s, when an unknown printer
-                        took a galley of type and scrambled it to make a type
-                        specimen book. It has survived not only five centuries,
-                        but also the leap into{" "}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-lg-4">
-                  <div className="resource_wrap">
-                    <div className="top_wrap text-center">
-                      <i className="fa-solid fa-map-location"></i>
-                      <h4>ADVOCACY</h4>
-                    </div>
-                    <div className="bottom_wrap">
-                      <p>
-                        Access tools designed to help you succeed in your
-                        practice no matter the stage of your career.Lorem Ipsum
-                        is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard
-                        dummy text ever since the 1500s, when an unknown printer
-                        took a galley of type and scrambled it to make a type
-                        specimen book. It has survived not only five centuries,
-                        but also the leap into{" "}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-lg-4">
-                  <div className="resource_wrap">
-                    <div className="top_wrap text-center">
-                      <i className="fa-solid fa-lightbulb"></i>
-                      <h4>ALUMNI</h4>
-                    </div>
-                    <div className="bottom_wrap">
-                      <p>
-                        Access tools designed to help you succeed in your
-                        practice no matter the stage of your career.Lorem Ipsum
-                        is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard
-                        dummy text ever since the 1500s, when an unknown printer
-                        took a galley of type and scrambled it to make a type
-                        specimen book. It has survived not only five centuries,
-                        but also the leap into{" "}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                {data.no_position &&
+                  data.no_position.slice(3, 6).map((item) => {
+                    return (
+                      <div className="col-md-6 col-lg-4">
+                        <div className="resource_wrap">
+                          <div className="top_wrap text-center">
+                            <i className="fa-solid fa-chalkboard-user"></i>
+                            <h4>{item.menu_name}</h4>
+                          </div>
+                          <div className="bottom_wrap">
+                            {
+                              parser.parseFromString(
+                                item.body_content,
+                                "text/html"
+                              ).body.innerText
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -480,49 +484,29 @@ export default function Home() {
             <div className="row">
               <div className="col-lg-12 text-center">
                 <div className="section_header">
-                  <h4> BMANA SPONSORS </h4>
+                  <h4> OUR SPONSORS </h4>
                 </div>
               </div>
             </div>
             <div className="sponsor_wrapper" data-aos="fade-up">
               <div className="row">
                 <div className="col-lg-1"></div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-lg-1"></div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-4 col-lg-3">
-                  <div className="sponsor_wrap">
-                    <img src="assets/images/spon_1.png" alt="" />
-                  </div>
-                </div>
+                {data.sponsors &&
+                  data.sponsors.map((item) => {
+                    return (
+                      <div className="col-sm-6 col-md-4 col-lg-3">
+                        <div className="sponsor_wrap">
+                          <a href={item.website_url} target="_blank">
+                            <img
+                              src={`https://icircles.app/${item.sponsor_logo}`}
+                              alt=""
+                            />
+                            <br></br>
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -544,21 +528,27 @@ export default function Home() {
                 <div className="col-lg-1"></div>
                 <div className="col-lg-10">
                   <div className="news_imgSlide">
-                    <div className="news_img">
-                      <img src="assets/images/ss.png" alt="" />
-                    </div>
-                    <div className="news_img">
-                      <img src="assets/images/ss2.png" alt="" />
-                    </div>
-                    <div className="news_img">
-                      <img src="assets/images/ss3.png" alt="" />
-                    </div>
-                    <div className="news_img">
-                      <img src="assets/images/ss4.png" alt="" />
-                    </div>
-                    <div className="news_img">
-                      <img src="assets/images/ss5.png" alt="" />
-                    </div>
+                    <Slider {...settings_slide} className="">
+                      {data.no_position &&
+                        data.no_position.slice(6, 10).map((item) => {
+                          return (
+                            <div className="news_slider">
+                              <img
+                                src={`https://icircles.app/uploads/content/${item.microsite_id}/${item.featured_image}`}
+                              />
+                              <div className="news_slider-overlay"></div>
+                              <a href="#">
+                                {
+                                  parser.parseFromString(
+                                    item.page_title,
+                                    "text/html"
+                                  ).body.innerText
+                                }
+                              </a>
+                            </div>
+                          );
+                        })}
+                    </Slider>
                   </div>
                 </div>
                 <div className="col-lg-1"></div>
@@ -692,7 +682,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer />
+      <Footer nav={data.foot_nav && data.foot_nav} />
     </div>
   );
 }

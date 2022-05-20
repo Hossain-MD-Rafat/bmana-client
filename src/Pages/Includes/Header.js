@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { ModalContext } from "../../App";
 
 export default function (props) {
+  const { show, handleShow, handleClose } = useContext(ModalContext);
   return (
     <div>
       <header>
@@ -67,19 +71,21 @@ export default function (props) {
                       <div class="nav_list">
                         <ul>
                           <li>
-                            <a href="index.html">
+                            <Link to="/">
                               {" "}
                               <span>
                                 <i class="fa-solid fa-house"></i>
                               </span>{" "}
                               Home
-                            </a>
+                            </Link>
                           </li>
                           {props.mainNav &&
                             props.mainNav.map((navItem) => {
                               return (
                                 <li>
-                                  <a href="about.html">
+                                  <Link
+                                    to={`/page/${props.ms_id}/${navItem.id}`}
+                                  >
                                     {" "}
                                     <span>
                                       <i class="fa-solid fa-circle-info"></i>
@@ -90,15 +96,17 @@ export default function (props) {
                                         <i class="fa-solid fa-caret-down"></i>
                                       </span>
                                     )}
-                                  </a>
+                                  </Link>
                                   {navItem.sub_nav.length > 0 && (
                                     <ul class="sub_down">
                                       {navItem.sub_nav.map((item) => {
                                         return (
                                           <li>
-                                            <a href="about.html">
+                                            <Link
+                                              to={`/page/${props.ms_id}/${navItem.id}`}
+                                            >
                                               {item.menu_name}
-                                            </a>
+                                            </Link>
                                           </li>
                                         );
                                       })}
@@ -110,11 +118,7 @@ export default function (props) {
                         </ul>
                       </div>
                       <div class="login_btn text-center">
-                        <a
-                          href="#"
-                          data-bs-toggle="modal"
-                          data-bs-target="#staticBackdrop2"
-                        >
+                        <a href="" onClick={handleShow}>
                           {" "}
                           <span>
                             <i class="fa-solid fa-user"></i>
@@ -162,7 +166,7 @@ export default function (props) {
             <div class="offcanvas-body">
               <div class="nav_list">
                 <div class="dropdown">
-                  <a href="#">Home</a>
+                  <Link to="/">Home</Link>
                 </div>
               </div>
               {props.mainNav &&
@@ -170,17 +174,23 @@ export default function (props) {
                   return (
                     <div class="nav_list">
                       <div class="dropdown">
-                        <a href="#" class="js-link1">
+                        <Link
+                          to={`/page/${props.ms_id}/${navItem.id}`}
+                          className="js-link1"
+                        >
+                          {navItem.menu_name}
                           {navItem.menu_name}
                           <i class="fa fa-chevron-down"></i>
-                        </a>
+                        </Link>
 
                         {navItem.sub_nav.length > 0 && (
                           <ul class="js-dropdown-list1">
                             {navItem.sub_nav.map((item) => {
                               return (
                                 <li>
-                                  <a href="#">{item.menu_name}</a>
+                                  <Link to={`/page/${props.ms_id}/${item.id}`}>
+                                    {item.menu_name}
+                                  </Link>
                                 </li>
                               );
                             })}
@@ -190,10 +200,260 @@ export default function (props) {
                     </div>
                   );
                 })}
+              <div class="nav_list">
+                <div class="dropdown">
+                  <a href="#">Contact</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      <Modal show={show} onHide={handleClose} id="modal_1" size="lg">
+        <Modal.Header closebutton>
+          <Modal.Title></Modal.Title>
+          <button
+            variant="secondary"
+            className="modal-close"
+            onClick={handleClose}
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </Modal.Header>
+
+        <Modal.Body>
+          <div class="row">
+            <div class="col-12 col-xl-12">
+              <div class="modal-body">
+                <div class="header_info">
+                  <img src="assets/images/bmana.png" alt="" />
+                  <h5>
+                    Bmana - Bangladesh Medical Association of North America
+                  </h5>
+                </div>
+                <ul
+                  class="nav nav-pills mb-3 text-center"
+                  id="pills-tab"
+                  role="tablist"
+                >
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="pills-home-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-home"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-home"
+                      aria-selected="true"
+                    >
+                      Sign In
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-profile-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-profile"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-profile"
+                      aria-selected="false"
+                    >
+                      Sign Up
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div
+                    class="tab-pane fade show active"
+                    id="pills-home"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                  >
+                    <div class="row">
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-8">
+                        <div class="signIn_body">
+                          <div class="signin_form">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <form action="#">
+                                  <input
+                                    type="text"
+                                    class="form_control"
+                                    placeholder="Email / Username"
+                                  />
+                                </form>
+
+                                <form action="#">
+                                  <input
+                                    type="password"
+                                    class="form_control"
+                                    placeholder="Password"
+                                  />
+                                </form>
+                                <div class="continue_btn">
+                                  <a href="#">
+                                    {" "}
+                                    <img src="assets/images/logo.png" alt="" />
+                                    Log In
+                                  </a>
+                                </div>
+                                <div class="forget_setion">
+                                  <span>
+                                    <input type="checkbox" /> Remember Me
+                                  </span>
+
+                                  <a href="#" style={{ color: "#0069cf" }}>
+                                    Forgot Password
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2"></div>
+                    </div>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="pills-profile"
+                    role="tabpanel"
+                    aria-labelledby="pills-profile-tab"
+                  >
+                    <div class="signUp_body">
+                      <div class="signUp_form">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <form action="#" class="d-flex">
+                              <input
+                                type="text"
+                                style={{ marginRight: "10px" }}
+                                class="form_control"
+                                placeholder="First Name"
+                              />
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Last Name"
+                              />
+                            </form>
+
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Home Address"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Office Address"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Faculty Affiliations & Speciations"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Telephone"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Call"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="E-mail"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Medical School"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="State of Medical Licensure"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="License"
+                              />
+                            </form>
+                            <form action="#">
+                              <input
+                                type="text"
+                                class="form_control"
+                                placeholder="Date"
+                              />
+                            </form>
+                            <div class="statement">
+                              <ul>
+                                <li>
+                                  <a href="#">
+                                    <form action="#">
+                                      <input type="checkbox" /> To The Best of
+                                      my knowledge, the information is the
+                                      correct status of my professional
+                                      activity.
+                                    </form>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <form action="#">
+                                      <input type="checkbox" /> I agree to
+                                      disclose above information's for BMANA
+                                      membership registry & publication.
+                                    </form>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="continue_btn">
+                              <a href="#">
+                                {" "}
+                                <img src="assets/images/logo.png" alt="" />
+                                Registration
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
