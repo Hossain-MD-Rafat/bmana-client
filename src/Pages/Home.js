@@ -2,38 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import Header from "./Includes/Header";
 import Footer from "./Includes/Footer";
 import Slider from "react-slick";
-import { ModalContext } from "../App";
+import { ModalContext, DataContext } from "../App";
 import { Link } from "react-router-dom";
-import Page from "./Page";
 
 export default function Home() {
   const parser = new DOMParser();
-  const [data, setData] = useState([]);
-  const [members, setMembers] = useState([]);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = () => {
-    fetch("https://icircles.app/api/medicalassociation/home/166")
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data.data);
-        let ms_id = data.data.ms_id;
-        fetch(
-          `https://icircles.app/api/medicalassociation/membersearch/${ms_id}`
-        )
-          .then((response) => response.json())
-          .then((data) => setMembers(data.data))
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const settings = {
     infinite: true,
@@ -98,6 +71,7 @@ export default function Home() {
     ],
   };
 
+  const { data, members } = useContext(DataContext);
   const { show, handleShow, handleClose } = useContext(ModalContext);
 
   return (
@@ -200,7 +174,7 @@ export default function Home() {
                                 {navItem.sub_nav.map((item) => {
                                   return (
                                     <li>
-                                      <Link to={`/page/${item.id}`}>
+                                      <Link to={`/page/${data.ms_id}/${item.id}`}>
                                         {item.menu_name}
                                       </Link>
                                     </li>
@@ -213,13 +187,13 @@ export default function Home() {
                       })}
 
                     <li>
-                      <a>
+                      <Link to="/contact">
                         {" "}
                         <span>
                           <i className="fa-solid fa-phone"></i>
                         </span>{" "}
                         Contact Us
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>

@@ -1,10 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ModalContext } from "../../App";
+import { DataContext, ModalContext } from "../../App";
 
 export default function (props) {
   const { show, handleShow, handleClose } = useContext(ModalContext);
+  const { members } = useContext(DataContext);
+  const [findMembers, setFindMembers] = useState([]);
+  const search = (e) => {
+    if (e.target.value.length < 1) return;
+    const str = ".*";
+    const targetTXT = new RegExp(str + e.target.value + str, "gi");
+    let searchRes = members.filter((member) => {
+      if ((member.firstname + " " + member.lastname).match(targetTXT)) {
+        return member;
+      }
+    });
+    setFindMembers(searchRes);
+  };
   return (
     <div>
       <header>
@@ -14,11 +27,24 @@ export default function (props) {
               <div class="col-lg-12 text-end">
                 <div class="header_wrapper">
                   <div class="header_search">
+                    <ul
+                      className={`search-result ${
+                        findMembers.length > 0 ? "d-block" : "d-none"
+                      }`}
+                    >
+                      {findMembers.map((member) => {
+                        return (
+                          <li>{member.firstname + " " + member.lastname}</li>
+                        );
+                      })}
+                    </ul>
+
                     <form action="#">
                       <input
                         class="form_control"
                         type="text"
                         placeholder="Search"
+                        onChange={search}
                       />
                       <i class="fa-solid fa-magnifying-glass"></i>
                     </form>
@@ -66,7 +92,7 @@ export default function (props) {
                   <div class="sideBar_wrapper">
                     <div class="sideBar_contain">
                       <div class="logo text-center">
-                        <img src="images/bmana.png" alt="" />
+                        <img src="assets/images/bmana.png" alt="" />
                       </div>
                       <div class="nav_list">
                         <ul>

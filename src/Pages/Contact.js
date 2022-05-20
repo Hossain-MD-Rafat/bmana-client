@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { DataContext } from "../App";
 import Footer from "./Includes/Footer";
 import PageHeader from "./Includes/PageHeader";
 
 export default function Contact() {
+  const { data } = useContext(DataContext);
   return (
     <div>
-      <PageHeader />
+      <PageHeader mainNav={data.main_nav} ms_id={data.ms_id}/>
       <section>
         <div class="contact" id="contact">
           <div class="container">
@@ -135,7 +137,7 @@ export default function Contact() {
           </div>
         </div>
       </section>
-      <Footer />
+      <Footer nav={data.foot_nav && data.foot_nav}/>
     </div>
   );
 }

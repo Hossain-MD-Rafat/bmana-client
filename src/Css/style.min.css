@@ -146,7 +146,7 @@ p {
   position: absolute;
   width: 100%;
   top: 0;
-  z-index: 10;
+  z-index: 11;
 }
 .header .header_wrapper {
   display: flex;
@@ -253,7 +253,7 @@ p {
   position: fixed;
   width: 100%;
   top: 0;
-  z-index: 999;
+  z-index: 10;
   opacity: 0;
 }
 .headerPartTwo .headerPartTwo_wrapper .sideBar_wrapper .sideBar_contain {
@@ -2702,4 +2702,46 @@ h5 {
   background-color: #259c70;
   transition: all 0.4s ease-in-out;
   border: 1px solid #259c70;
+}
+.header_search {
+  position: relative;
+}
+.search-result {
+  position: absolute;
+  bottom: -45px;
+  background: white;
+  left: 22px;
+  padding: 10px 30px;
+  text-align: left;
+}
+.read {
+  padding: 100px 0;
+}
+.read .read_wrapper .img_wrap img {
+  width: 100%;
+  border-radius: 15px;
+  max-height: 650px;
+  height: 650px;
+}
+.read .read_wrapper .wrap {
+  padding-top: 20px;
+}
+.read .read_wrapper .wrap h4 {
+  font-size: 30px;
+  color: black;
+  font-weight: 500;
+  line-height: 40px;
+  text-transform: uppercase;
+}
+.read .read_wrapper .wrap h5 {
+  font-size: 20px;
+  color: #333;
+  font-weight: 500;
+  line-height: 32px;
+}
+.read .read_wrapper .wrap p {
+  font-size: 16px;
+  color: #333;
+  font-weight: 400;
+  line-height: 26px;
 }
