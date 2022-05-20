@@ -4,6 +4,7 @@ import "./Css/responsive.css";
 import Home from "./Pages/Home";
 import Page from "./Pages/Page";
 import { createContext, useState } from "react";
+import Contact from "./Pages/Contact";
 
 export const ModalContext = createContext();
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <ModalContext.Provider value={{ show, handleClose, handleShow }}>
           <Routes>
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/contact" element={<Contact />} />
             <Route exact path="page/:ms_id/:page_id" element={<Page />} />
           </Routes>
         </ModalContext.Provider>

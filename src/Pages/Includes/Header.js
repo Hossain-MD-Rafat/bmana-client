@@ -115,6 +115,15 @@ export default function (props) {
                                 </li>
                               );
                             })}
+                          <li>
+                            <Link to="/contact">
+                              {" "}
+                              <span>
+                                <i className="fa-solid fa-phone"></i>
+                              </span>{" "}
+                              Contact
+                            </Link>
+                          </li>
                         </ul>
                       </div>
                       <div class="login_btn text-center">

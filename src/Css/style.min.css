@@ -2412,9 +2412,6 @@ input.form_control {
   color: #000;
   font-weight: 500;
 }
-.contact {
-  padding-bottom: 130px;
-}
 .contact .contact_wrapper {
   position: relative;
   margin-top: 30px;
@@ -2665,29 +2662,29 @@ h5 {
   font-size: 24px;
   line-height: 40px;
 }
-.modal-close i{
+.modal-close i {
   font-size: 36px;
 }
-.news_slider{
+.news_slider {
   position: relative;
   height: 500px;
   width: 50%;
   margin: 0, auto;
 }
-.news_slider img{
+.news_slider img {
   position: absolute;
   height: 100%;
   width: 100%;
   z-index: -10;
 }
-.news_slider-overlay{
+.news_slider-overlay {
   position: absolute;
   height: 100%;
   width: 100%;
   background-color: #000;
   opacity: 0.6;
 }
-.news_slider a{
+.news_slider a {
   position: absolute;
   right: -50%;
   transform: translateX(50%);
@@ -2701,8 +2698,8 @@ h5 {
   border-radius: 10px;
   z-index: 10;
 }
-.news_slider a:hover{
-  background-color:#259c70;
+.news_slider a:hover {
+  background-color: #259c70;
   transition: all 0.4s ease-in-out;
   border: 1px solid #259c70;
 }
